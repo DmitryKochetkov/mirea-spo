@@ -24,13 +24,13 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst, LPSTR lpszArgs, int
 	wcl.lpszMenuName = NULL; // Меню нет
 	wcl.cbClsExtra = 0; // Дополнительной информации нет
 	wcl.cbWndExtra = 0; // Дополнительной информации нет
-	wcl.hbrBackground = (HBRUSH)GetStockObject(HOLLOW_BRUSH);
+	wcl.hbrBackground = CreateSolidBrush(RGB(242, 0, 255));
 	// Установка фона окна
 	/* Регистрация класса окна */
 	if (!RegisterClassEx(&wcl)) return 0;
 	/* Создаём само окно */
 	hwnd = CreateWindow(szWinName, // Имя класса окна
-		"API application", // Заголовок
+		"Practice 1", // Заголовок
 		WS_OVERLAPPEDWINDOW, // Стиль окна - нормальный
 		CW_USEDEFAULT, // Координата X - выбирает Windows
 		CW_USEDEFAULT, // Координата Y - выбирает Windows
@@ -68,6 +68,49 @@ LRESULT CALLBACK WindowFunc(HWND hwnd, UINT message,
 	case WM_RBUTTONDOWN: // Обработчик
    //нажатия правой кнопки мыши
 		break;
+
+	case WM_CREATE: {
+		/*
+		HWND hButton = CreateWindow(
+			"BUTTON",
+			"Create child",
+			WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
+			0, 0, 300, 30, hwnd, reinterpret_cast<HMENU>(1337), nullptr, nullptr
+		);
+		*/
+		HWND hChild1 = CreateWindow(szWinName,
+			"Practice 1: child1", // Заголовок
+			WS_OVERLAPPEDWINDOW, // Стиль окна - нормальный
+			CW_USEDEFAULT, // Координата X - выбирает Windows
+			CW_USEDEFAULT, // Координата Y - выбирает Windows
+			CW_USEDEFAULT, // Ширина - выбирает Windows
+			CW_USEDEFAULT, // Высота - выбирает Windows
+			hwnd, // Нет родительского окна
+			NULL, // Нет меню
+			nullptr, // Работа с данным экземпляром программы
+			NULL // Дополнительные аргументы отсутствуют
+		);
+		ShowWindow(hChild1, SW_NORMAL);
+		UpdateWindow(hChild1);
+		break;
+	}
+
+	/*
+	case WM_COMMAND: {
+		switch (LOWORD(wParam))
+		{
+		case 1337:
+		{
+			MessageBox(hwnd, "Hi", "Hi", MB_ICONINFORMATION);
+		}
+
+		default:
+			break;
+		}
+		break;
+	}
+	*/
+
 	case WM_DESTROY: // Завершение программы
 		PostQuitMessage(0);
 		break;
